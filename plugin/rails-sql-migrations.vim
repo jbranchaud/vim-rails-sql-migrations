@@ -26,8 +26,9 @@ function! s:GetScriptNumber(script_name)
   return -1
 endfunction
 
+let s:vim_rails_autoload_snr = s:GetScriptNumber("autoload/rails.vim")
+
 function! s:BuildRailsVimFunction(func_name, args) abort
-  let vim_rails_autoload_snr = s:GetScriptNumber("autoload/rails.vim")
   let coerced_args = []
   for arg in a:args
     if type(arg) == type("")
@@ -37,7 +38,7 @@ function! s:BuildRailsVimFunction(func_name, args) abort
     endif
   endfor
   let args_str = join(coerced_args, ",")
-  return printf("<SNR>%d_%s(%s)", vim_rails_autoload_snr, a:func_name, args_str)
+  return printf("<SNR>%d_%s(%s)", s:vim_rails_autoload_snr, a:func_name, args_str)
 endfunction
 
 
@@ -45,11 +46,6 @@ endfunction
 
 function! s:app_migration(file) dict
   let func_str = s:BuildRailsVimFunction("app_migration", [a:file])
-  return eval(func_str)
-endfunction
-
-function! s:error(str)
-  let func_str = s:BuildRailsVimFunction("error", [a:str])
   return eval(func_str)
 endfunction
 
@@ -91,6 +87,14 @@ function! s:camelize(str)
   let str = s:gsub(a:str,'/(.=)','::\u\1')
   let str = s:gsub(str,'%([_-]|<)(.)','\u\1')
   return str
+endfunction
+
+function! s:error(str)
+  echohl ErrorMsg
+  echomsg a:str
+  echohl None
+  let v:errmsg = a:str
+  return ''
 endfunction
 
 
@@ -147,8 +151,10 @@ endfunction
 augroup railsSqlMigrations
   autocmd!
   autocmd User BufEnterRails
-        \ if s:GetScriptNumber("autoload/rails.vim") > 0 |
+        \ if s:vim_rails_autoload_snr > 0 |
         \   call s:SetupRailsSQLMigrations() |
+        \ else
+        \   call s:error("Rails.vim plugin is required for rails-sql-migrations.vim")
         \ endif
 augroup END
 
