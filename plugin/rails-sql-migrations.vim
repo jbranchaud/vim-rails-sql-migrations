@@ -153,8 +153,8 @@ augroup railsSqlMigrations
   autocmd User BufEnterRails
         \ if s:vim_rails_autoload_snr > 0 |
         \   call s:SetupRailsSQLMigrations() |
-        \ else
-        \   call s:error("Rails.vim plugin is required for rails-sql-migrations.vim")
+        \ else |
+        \   call s:error("Rails.vim plugin is required for rails-sql-migrations.vim") |
         \ endif
 augroup END
 
