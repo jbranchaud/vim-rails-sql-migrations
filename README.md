@@ -28,3 +28,7 @@ class CreatePostsTable < ActiveRecord::Migration
   end
 end
 ```
+
+This plugin works with all the `rails.vim` commands you are used to:
+`:Ssql`, `:Vsql`, etc. It also provides tab completion of your project's
+existing migrations.
