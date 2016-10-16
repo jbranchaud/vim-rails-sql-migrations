@@ -137,6 +137,9 @@ function! s:sqlEdit(cmd,...)
   endif
 endfunction
 
+
+" Setup
+
 function! s:SetupRailsSQLMigrations()
   call s:addfilecmds('sql')
 endfunction
