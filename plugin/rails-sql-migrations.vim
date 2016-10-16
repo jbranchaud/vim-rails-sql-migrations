@@ -72,13 +72,7 @@ endfunction
 " Utility
 
 function! s:sub(str,pat,rep)
-  let func_str = s:BuildRailsVimFunction("sub", [a:str, a:pat, a:rep])
-  return eval(func_str)
-endfunction
-
-function! s:gsub(str,pat,rep)
-  let func_str = s:BuildRailsVimFunction("gsub", [a:str, a:pat, a:rep])
-  return eval(func_str)
+  return substitute(a:str,'\v\C'.a:pat,a:rep,'')
 endfunction
 
 
