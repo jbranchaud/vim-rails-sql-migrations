@@ -72,19 +72,13 @@ endfunction
 " Utility
 
 function! s:sub(str,pat,rep)
-  return substitute(a:str,'\v\C'.a:pat,a:rep,'')
+  let func_str = s:BuildRailsVimFunction("sub", [a:str, a:pat, a:rep])
+  return eval(func_str)
 endfunction
 
 function! s:gsub(str,pat,rep)
-  return substitute(a:str,'\v\C'.a:pat,a:rep,'g')
-endfunction
-
-function! s:underscore(str)
-  let str = s:gsub(a:str,'::','/')
-  let str = s:gsub(str,'(\u+)(\u\l)','\1_\2')
-  let str = s:gsub(str,'(\l|\d)(\u)','\1_\2')
-  let str = tolower(str)
-  return str
+  let func_str = s:BuildRailsVimFunction("gsub", [a:str, a:pat, a:rep])
+  return eval(func_str)
 endfunction
 
 
