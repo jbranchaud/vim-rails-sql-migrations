@@ -2,6 +2,10 @@
 
 > rails.vim helper for generating SQL migrations for Rails projects
 
+I built this for all my friends at [Hashrocket](https://hashrocket.com/) so
+that they never again have to manually type out the `up` and `down` methods
+with their respective heredocs.
+
 This plugin requires and works with the
 [`rails.vim`](https://github.com/tpope/vim-rails) plugin to provide a set of
 file commands for creating and opening SQL migrations.
