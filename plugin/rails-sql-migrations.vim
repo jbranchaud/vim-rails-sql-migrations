@@ -58,6 +58,11 @@ function! s:findcmdfor(cmd) abort
   return eval(func_str)
 endfunction
 
+function! s:migrationList(A,L,P)
+  let func_str = s:BuildRailsVimFunction("migrationList", [a:A, a:L, a:P])
+  return eval(func_str)
+endfunction
+
 function! s:open(cmd, file) abort
   let func_str = s:BuildRailsVimFunction("open", [a:cmd, a:file])
   return eval(func_str)
@@ -95,6 +100,10 @@ map <SID>xx <SID>xx
 let s:sid = s:sub(maparg("<SID>xx"),'xx$','')
 unmap <SID>xx
 
+function! s:sqlList(A,L,P)
+  return s:migrationList(a:A, a:L, a:P)
+endfunction
+
 function! s:addfilecmds(type)
   let l = s:sub(a:type,'^.','\l&')
   for prefix in ['E', 'S', 'V', 'T', 'D', 'R', 'RE', 'RS', 'RV', 'RT', 'RD']
@@ -120,7 +129,7 @@ function! s:sqlEdit(cmd,...)
     return rails#buffer().open_command(a:cmd, strftime('%Y%m%d%H%M%S', ts - offset).'_'.arg, 'migration',
           \ [{'pattern': 'db/migrate/*.rb', 'template': template}])
   endif
-  let migr = arg == "." ? "db/migrate" : s:app_migration(arg)
+  let migr = arg == "." ? "db/migrate" : rails#app().migration(arg)
   if migr != ''
     return s:open(cmd, migr)
   else
