@@ -12,7 +12,7 @@ let g:loaded_rails_sql_migrations = 1
 " Introspection
 
 " http://stackoverflow.com/questions/24027506/get-a-vim-scripts-snr
-func! s:GetScriptNumber(script_name)
+function! s:GetScriptNumber(script_name)
   redir => scriptnames
   silent! scriptnames
   redir END
@@ -24,7 +24,7 @@ func! s:GetScriptNumber(script_name)
   endfor
 
   return -1
-endfunc
+endfunction
 
 function! s:BuildRailsVimFunction(func_name, args) abort
   let vim_rails_autoload_snr = s:GetScriptNumber("autoload/rails.vim")
