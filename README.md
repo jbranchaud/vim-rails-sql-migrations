@@ -20,6 +20,7 @@ migration, generates a SQL-based migration.
 which generates and opens:
 
 ```ruby
+# db/migrate/20161016190650_create_posts_table.rb
 class CreatePostsTable < ActiveRecord::Migration
   def up
     execute <<~SQL
