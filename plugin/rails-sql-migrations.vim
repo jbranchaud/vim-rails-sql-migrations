@@ -26,8 +26,11 @@ function! s:GetScriptNumber(script_name)
   return -1
 endfunction
 
+function! s:GetVimRailsAutoloadSNR()
+  return s:GetScriptNumber("autoload/rails.vim")
+endfunction
+
 function! s:BuildRailsVimFunction(func_name, args) abort
-  let vim_rails_autoload_snr = s:GetScriptNumber("autoload/rails.vim")
   let coerced_args = []
   for arg in a:args
     if type(arg) == type("")
@@ -37,7 +40,7 @@ function! s:BuildRailsVimFunction(func_name, args) abort
     endif
   endfor
   let args_str = join(coerced_args, ",")
-  return printf("<SNR>%d_%s(%s)", vim_rails_autoload_snr, a:func_name, args_str)
+  return printf("<SNR>%d_%s(%s)", s:GetVimRailsAutoloadSNR(), a:func_name, args_str)
 endfunction
 
 
@@ -129,7 +132,7 @@ endfunction
 augroup railsSqlMigrations
   autocmd!
   autocmd User BufEnterRails
-        \ if s:GetScriptNumber("autoload/rails.vim") > 0 |
+        \ if s:GetVimRailsAutoloadSNR() > 0 |
         \   call s:SetupRailsSQLMigrations() |
         \ endif
 augroup END
