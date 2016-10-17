@@ -23,12 +23,12 @@ which generates and opens:
 # db/migrate/20161016190650_create_posts_table.rb
 class CreatePostsTable < ActiveRecord::Migration
   def up
-    execute <<~SQL
+    execute <<-SQL
     SQL
   end
 
   def down
-    execute <<~SQL
+    execute <<-SQL
     SQL
   end
 end
