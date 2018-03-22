@@ -110,7 +110,20 @@ function! s:sqlEdit(cmd,...)
     elseif offset >= 12 * 60 * 60
       let offset -= 86400
     endif
-    let template = 'class ' . rails#camelize(matchstr(arg, '[^!]*')) . " < ActiveRecord::Migration\n  def up\n    execute <<-SQL\n    SQL\n  end\n\n  def down\n    execute <<-SQL\n    SQL\n  end\nend"
+
+    let superclass = "ActiveRecord::Migration" . s:getVersionModifier()
+
+    let template = 'class ' . rails#camelize(matchstr(arg, '[^!]*')) . " < " . superclass
+          \ . "\n  def up"
+          \ . "\n    execute <<-SQL"
+          \ . "\n    SQL"
+          \ . "\n  end"
+          \ . "\n"
+          \ . "\n  def down"
+          \ . "\n    execute <<-SQL"
+          \ . "\n    SQL"
+          \ . "\n  end"
+          \ . "\nend"
     return rails#buffer().open_command(a:cmd, strftime('%Y%m%d%H%M%S', ts - offset).'_'.arg, 'migration',
           \ [{'pattern': 'db/migrate/*.rb', 'template': template}])
   endif
@@ -119,6 +132,18 @@ function! s:sqlEdit(cmd,...)
     return s:open(cmd, migr)
   else
     return s:error("Migration not found".(arg=='' ? '' : ': '.arg))
+  endif
+endfunction
+
+function! s:getVersionModifier()
+  let railsVersion = system("rails -v")
+
+  if railsVersion =~ '5.0'
+    return "[5.0]"
+  elseif railsVersion =~ '5.1'
+    return "[5.1]"
+  else
+    return ""
   endif
 endfunction
 
