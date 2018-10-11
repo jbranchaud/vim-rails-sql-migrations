@@ -136,12 +136,10 @@ function! s:sqlEdit(cmd,...)
 endfunction
 
 function! s:getVersionModifier()
-  let railsVersion = system("rails -v")
+  let railsVersion = system('ruby -e "print %x{rails --version}.match(/(\d+\.\d+).*/)[1]"')
 
-  if railsVersion =~ '5.0'
-    return "[5.0]"
-  elseif railsVersion =~ '5.1'
-    return "[5.1]"
+  if railsVersion
+    return "[".l:railsVersion."]"
   else
     return ""
   endif
